@@ -62,27 +62,27 @@ function solve() {
           return this;
 		},
 		addStudent: function(name) {    
-         var student,
-             firstName,
-             lastName;
-             firstName = validateName(name)[0];
-             lastName = validateName(name)[1];
-          student = {
-               firstname:firstName,
-               lastname: lastName,
-               id: this.students.length + 1
-           };
-            this.students.push(student);
+      var student,
+        firstName,
+        lastName;
+        firstName = validateName(name)[0];
+        lastName = validateName(name)[1];
+      student = {
+        firstname:firstName,
+        lastname: lastName,
+        id: this.students.length + 1
+      };
+      this.students.push(student);
            
-            return student.id;
+        return student.id;
 		},
 		getAllStudents: function() {
           
-            return this.students.slice(0);
+        return this.students.slice(0);
 		},
 		submitHomework: function(studentID, homeworkID) {
-        validateId(studentID,this.students);
-        validateId(homeworkID, this.presentations);
+      validateId(this.students,studentID);
+      validateId(this.presentations,homeworkID);
 		},
 		pushExamResults: function(results) {
       var examResults = {
@@ -97,18 +97,15 @@ function solve() {
       var topStudents =[];
       topStudents.push(examResults.score);
       topStudents.sort(function(a, b){return b-a});
-      if (topStudents.length<10) {
-       var topTen = topStudents.slice(0,10);
-       return topTen;
-      } else{
-        return topStudents;
-      }
-		}
+      topStudents = topStudents.slice(0,10);
+
+      return topStudents;
+     }
     
 	};
     function validateTitle(title){
       var regex1 = /^[ ][a-z]+/gi,
-         regex2 = /[a-z]+[ ]$/gi;
+          regex2 = /[a-z]+[ ]$/gi;
       if (!title.length) {
         throw new Error('Invalid course title');
       }
@@ -130,21 +127,16 @@ function solve() {
     
           return splitName;
       }
-      function validateId(id, objects){
-        var validID = false;
-        objects.forEach(function(prop){
-          if(prop.id == id){
-             validID = true;
-          } else {
-            throw new Error('Invalid ID');
-          }
-        });
-      }
+    function validateId(objects,id){
+      if (objects.length < id || id <= 0) {
+          throw new Error('Invalid studentID');
+         }
+     }
       function validateResult(id,score){
         if (isNaN(score) || score === '') {
-          console.log('here');
+          
           throw new Error('Invalid score');
-      }
+        }
       }
 	return Course;
 }
